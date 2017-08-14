@@ -78,24 +78,35 @@ class bodhi_dpt(models.Model):
     #25.
     val_per_gram = fields.Float(string="Value Per Gram")
     
-    
-    #TO BE COMPLETED IN WAREHOUSE
-      #Section A
-    c_date = fields.Date(string="Date")
+   # #########################################
+    name = fields.Char(string='Name', default="Digital Product Tracking")
     client_id = fields.Many2one('res.partner', 'Client')
+    sale_order_id = fields.Many2one('sale.order', 'Initial Sale Order')
+    run_ids = fields.One2many(comodel_name='bodhi.run', inverse_name='dpt_id', 
+                             string='Bodhi Runs')
+    
+class bodhi_run(models.Model):
+    _name = 'bodhi.run'    
+    
+    dpt_id = fields.Many2one(comodel_name="bodhi.dpt", string="DPT order")
+    client_id = fields.Many2one(comodel_name='res.partner', related='dpt_id.client_id', string=None)
+
+    #TO BE COMPLETED IN WAREHOUSE
+        #Section A
+    c_date = fields.Date(string="Date")
     #service (already)
     strain = fields.Char(string="Strain")    
-    
+
     original_flower_lot_id = fields.Many2one(comodel_name='sce.inventory', string="Original Flower Lot")
     g_per_run = fields.Float(string="#g Per Run")
-   #TO BE COMPLETED IN EXTRACTION FOR FIRST RUN
-      #Section B
+    #TO BE COMPLETED IN EXTRACTION FOR FIRST RUN
+        #Section B
     run_number = fields.Char(string='Run #')
     run_date = fields.Date(string='Run Date')
     machine_num = fields.Char(string='Machine #')
     pre_purge_weight = fields.Float(string='Pre Purge Weight')
-    
-   #TO BE COMPLETED IN POST PROCESSING Section D
+
+    #TO BE COMPLETED IN POST PROCESSING Section D
     runs_put_together = fields.Char(string="Runs Put Together")
     hydro_carbon_num = fields.Char(string="Hydro Carbon # barcode")
     total_weight = fields.Float(string="Total Weight")
@@ -104,22 +115,14 @@ class bodhi_dpt(models.Model):
     customer_weight = fields.Float(string="Customer Weight")
     bodhi_weight = fields.Float(string="Bodhi Weight")
     new_bodhi_lot_num = fields.Char(string="New Bodhi Lot #")
-    
-   #TO BE COMPLETED IN POST PROCESSING Section E
+
+    #TO BE COMPLETED IN POST PROCESSING Section E
     tot_thc = fields.Float(string="Total THC")
     tot_cbd = fields.Float(string="Total CBD")
     tot_canna = fields.Float(string="Total Canna.")
     terpenes = fields.Float(string="Terpenes")
     pass_fail = fields.Selection(string="Pass/Fail", selection=[('pass','Pass'),('fail','Fail')])
     grade = fields.Selection(string="Grade", selection=[('bh','Bodhi High'),('ht','Honey Tree'), ('gl','Glob')])
-    type_of_package = fields.Selection(string="Type of Package", selection=[('box','Box'),('pl','Palette')])
-    
-    
- 
-   # #########################################
-    name = fields.Char(string='Name', default="Digital Product Tracking")
-    sale_order_id = fields.Many2one('sale.order', 'Initial Sale Order')
-    
-    
+    type_of_package = fields.Selection(string="Type of Package", selection=[('box','Box'),('pl','Palette')])    
 
 
