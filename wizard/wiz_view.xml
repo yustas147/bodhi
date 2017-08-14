@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="view_manual_bypass_create" model="ir.ui.view">
+            <field name="name">Manual Bypass Product Create</field>
+            <field name="model">mrp_wo_ed.manual.bypass.create</field>
+            <field name="arch" type="xml">
+                <form string="Manual Bypass Product Create">
+                    <p>Lets create b products 
+                    </p>
+                    <group>
+                        <field name="product_id" />
+                        <field name="quantity" />
+                        <field name="mo_id" />
+                        <button name='apply' string="Apply" type="object" />
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <act_window id="action_wizard_mbc"
+            name="MBC"
+            src_model="mrp.production"
+            res_model="mrp_wo_ed.manual.bypass.create"
+            view_type="form" view_mode="form"
+            key2="client_action_multi" target="new"
+            />
+    </data>
+</openerp>
