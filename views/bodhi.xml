@@ -22,7 +22,22 @@
             </field>
         </record>
 
-        <menuitem action="act_bodhi_dpt" id="menu_bodhi_dpt" name="Digital Product Tracking" parent="menu_dpr_head_id" sequence="1"/>
+        
+        <record id="act_bodhi_run" model="ir.actions.act_window">
+            <field name="name">Runs</field>
+            <field name="res_model">bodhi.run</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="bodhi_run_tree_view"/>
+            <field name="domain">[]</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Track Runs
+                </p>
+            </field>
+        </record>
+        
+        <menuitem action="act_bodhi_dpt" id="menu_bodhi_dpt" name="Digital Product Tracking" parent="menu_dpr_head_id" sequence="10"/>
+        <menuitem action="act_bodhi_run" id="menu_bodhi_run" name="Runs" parent="menu_dpr_head_id" sequence="20"/>
 
 
     </data>

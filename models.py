@@ -1,11 +1,36 @@
 # -*- coding: utf-8 -*-
-
 from openerp import models, fields, api
+import logging
+
+_logger = logging.getLogger(__name__)
 
 
 class bodhi_dpt(models.Model):
     _name = 'bodhi.dpt'
     
+    
+    
+    @api.multi
+    @api.depends('client_id','service')
+    def name_get(self):
+        res = []
+        for inst in self:
+            #res = super(bodhi_dpt, obj=inst).name_get()
+            nm = " ".join(filter(None, [inst.client_id.name, inst.service]))
+            res.append((inst.id, nm))
+        return res
+            
+    
+    @api.multi
+    @api.depends('client_id', 'service', 'qty_in_grams')
+    def _compute_display_name(self):
+        for inst in self:
+            nlist = [inst.client_id.name, inst.service, inst.qty_in_grams]
+            inst.display_name = " ".join(filter(None, nlist))
+            
+    display_name = fields.Char(string="DPT", compute='_compute_display_name')
+            
+        
     #purchase manager 
     #4.
     service = fields.Selection([('split', 'Split'), ('purchase', 'Purchase'), ('process', 'Process')], 'Service')
@@ -88,8 +113,38 @@ class bodhi_dpt(models.Model):
 class bodhi_run(models.Model):
     _name = 'bodhi.run'    
     
+    #@api.multi
+    #@api.depends('run_number')
+    #def name_get(self):
+        #res = []
+        #for inst in self:
+            #res.append((inst.id, inst.run_number))
+            #_logger.info("runned on %s" % (unicode(inst)))
+            #res.append((inst.id, unicode(inst.run_number)))
+        #return res
+            
+    @api.multi
+    @api.depends('run_number')
+    def name_get(self):
+        res = []
+        for inst in self:
+           # if not inst.name:
+                res.append((inst.id, inst.run_number))
+                _logger.info("runned on %s" % (unicode(inst)))
+        return res    
+    
+    @api.multi
+    @api.depends('run_number')
+    def _get_display_name(self):
+        for inst in self:
+            inst.display_name = unicode(inst.run_number)
+            
+    name = fields.Char(string="Name")
+    display_name = fields.Char(compute='_get_display_name')
     dpt_id = fields.Many2one(comodel_name="bodhi.dpt", string="DPT order")
     client_id = fields.Many2one(comodel_name='res.partner', related='dpt_id.client_id', string=None)
+    runs_together_added = fields.Many2many(comodel_name="bodhi.run", relation="bodhi_run_together", column1="runs_together_added", column2="runs_together_main", string="Runs added")
+    runs_together_main = fields.Many2many(comodel_name="bodhi.run", relation="bodhi_run_together", column1="runs_together_main", column2="runs_together_added", string="added to Run")
 
     #TO BE COMPLETED IN WAREHOUSE
         #Section A
@@ -97,7 +152,8 @@ class bodhi_run(models.Model):
     #service (already)
     strain = fields.Char(string="Strain")    
 
-    original_flower_lot_id = fields.Many2one(comodel_name='sce.inventory', string="Original Flower Lot")
+    original_flower_lot_ids = fields.Many2many(comodel_name='sce.inventory', string="Original Flower Lots")
+#    original_flower_lot_id = fields.Many2one(comodel_name='sce.inventory', string="Original Flower Lot")
     g_per_run = fields.Float(string="#g Per Run")
     #TO BE COMPLETED IN EXTRACTION FOR FIRST RUN
         #Section B

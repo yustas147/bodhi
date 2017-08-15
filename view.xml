@@ -11,7 +11,7 @@
                     <sheet>
                         <div class="oe_title">
                             <h1>
-                                <field name="name"/>
+                                <field name="display_name"/>
                             </h1>
                         </div>
                         <group>
@@ -101,6 +101,31 @@
                 
             </field>
         </record>
+        
+        <record model="ir.ui.view" id="bodhi_dpt_tree_view">
+            <field name="name">bodhi.dpt.tree.view</field>
+            <field name="model">bodhi.dpt</field>
+            <field name="arch" type="xml">
+                <tree string="Digital Product Tracking">
+                    <field name="display_name"/>
+                    <field name="exp_delivery_datetime"/>
+                    <field name="prod_request"/>
+                    <field name="delivery_date"/>
+                    <field name="total_owed_cc"/>
+                    <field name="total_owed_bv"/>
+                    <field name="qty_in_grams"/>
+                    <field name="tot_transfer_amount"/>
+                    <field name="tot_paid_for_purchase_material"/>
+                    <field name="est_num_runs"/>
+                    <field name="cust_yield"/>
+                    <field name="cons_cannabis_yield"/>
+                    <field name="num_of_tests"/>
+                    <field name="client_id"/>
+                    <field name="run_ids" widget='many2many_tags'/>
+                </tree>
+            </field>
+        </record>
+                
         <record model="ir.ui.view" id="bodhi_run_form_view">
             <field name="name">bodhi.run.form.view</field>
             <field name="model">bodhi.run</field>
@@ -111,7 +136,8 @@
                     <sheet>
                         <div class="oe_title">
                             <h1>
-                                Per Run Sheet
+                                <field name='name'/>
+                                <field name='display_name'/>
                             </h1>
                         </div>
                         
@@ -127,7 +153,7 @@
                                     <field name='strain'/>
                                 </group>
                                 <group col="4" colspan="2">
-                                    <field name='original_flower_lot_id'/>
+                                    <field name='original_flower_lot_ids' widget='many2many_tags'/>
                                     <field name='g_per_run'/>
                                 </group>
                             </page>
@@ -166,10 +192,42 @@
                                 </group>
                             </page>
                         </notebook>
+                        <group>
+                            <field name="runs_together_added">
+                                <tree>
+                                    <field name="run_number"/>
+                                </tree>
+                            </field>
+                            <field name="runs_together_main">
+                                <tree>
+                                    <field name="run_number"/>
+                                </tree>
+                            </field>
+                        </group>
                        
                         
                     </sheet>
                 </form>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="bodhi_run_tree_view">
+            <field name="name">bodhi.run.tree.view</field>
+            <field name="model">bodhi.run</field>
+            <field name="arch" type="xml">
+                <tree string="Bodhi Run">
+                    <!--<field name="name"/>-->
+                    <!--<field name="display_name"/>-->
+                    <field name="run_number"/>
+                    <field name="original_flower_lot_ids"/>
+                    <field name="strain"/>
+                    <field name="c_date"/>
+                    <field name="g_per_run"/>
+                    <field name="runs_together_added" />
+                    <field name="runs_together_main" widget="many2many_tags"/>
+                    <field name="machine_num"/>
+                    <!--<field name="client_id"/>-->
+                    <field name="dpt_id"/>
+                </tree>
             </field>
         </record>
 
