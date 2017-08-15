@@ -11,12 +11,13 @@ class bodhi_dpt(models.Model):
     
     
     @api.multi
-    @api.depends('client_id','service')
+    @api.depends('client_id','service','prod_request')
     def name_get(self):
         res = []
         for inst in self:
             #res = super(bodhi_dpt, obj=inst).name_get()
-            nm = " ".join(filter(None, [inst.client_id.name, inst.service]))
+            nm = " ".join(filter(None, [inst.service, inst.prod_request, 'by', inst.client_id.name]))
+            _logger.info('nm is: %s' % (unicode(nm)))
             res.append((inst.id, nm))
         return res
             
@@ -25,7 +26,7 @@ class bodhi_dpt(models.Model):
     @api.depends('client_id', 'service', 'qty_in_grams')
     def _compute_display_name(self):
         for inst in self:
-            nlist = [inst.client_id.name, inst.service, inst.qty_in_grams]
+            nlist = [inst.service, inst.prod_request, 'BY', inst.client_id.name]
             inst.display_name = " ".join(filter(None, nlist))
             
     display_name = fields.Char(string="DPT", compute='_compute_display_name')
@@ -104,7 +105,7 @@ class bodhi_dpt(models.Model):
     val_per_gram = fields.Float(string="Value Per Gram")
     
    # #########################################
-    name = fields.Char(string='Name', default="Digital Product Tracking")
+    name = fields.Char(string='Name')
     client_id = fields.Many2one('res.partner', 'Client')
     sale_order_id = fields.Many2one('sale.order', 'Initial Sale Order')
     run_ids = fields.One2many(comodel_name='bodhi.run', inverse_name='dpt_id', 

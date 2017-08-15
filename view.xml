@@ -12,6 +12,7 @@
                         <div class="oe_title">
                             <h1>
                                 <field name="display_name"/>
+                                <field name="name"/>
                             </h1>
                         </div>
                         <group>
@@ -107,6 +108,7 @@
             <field name="model">bodhi.dpt</field>
             <field name="arch" type="xml">
                 <tree string="Digital Product Tracking">
+                    <!--<field name="name"/>-->
                     <field name="display_name"/>
                     <field name="exp_delivery_datetime"/>
                     <field name="prod_request"/>
