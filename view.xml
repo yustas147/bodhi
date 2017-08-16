@@ -1,12 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <openerp>
     <data>
+        <record model="ir.ui.view" id="bodhi_dpt_tree_view">
+            <field name="name">bodhi.dpt.tree.view</field>
+            <field name="model">bodhi.dpt</field>
+            <field name="arch" type="xml">
+                <tree string="Digital Product Tracking">
+                    <!--<field name="name"/>-->
+                    <field name="client_id"/>
+                    <field name="sale_order_id"/>
+                    <field name="display_name"/>
+                    <field name="exp_delivery_datetime"/>
+                    <field name="prod_request" />
+                    <field name="delivery_date"/>
+                    <field name="total_owed_cc"/>
+                    <field name="total_owed_bv"/>
+                    <field name="qty_in_grams"/>
+                    <field name="tot_transfer_amount"/>
+                    <field name="tot_paid_for_purchase_material"/>
+                    <field name="est_num_runs"/>
+                    <field name="cust_yield"/>
+                    <field name="cons_cannabis_yield"/>
+                    <field name="num_of_tests"/>
+                    <field name="num_of_bh_tests"/>
+                    <field name="xr_yield"/>
+                    <field name="xr_num_of_tests"/>
+                    <field name="bh_material_packaged"/>
+                    <field name="ht_material_packaged"/>
+                    <field name="gl_material_packaged"/>
+                    <field name="dist_run"/>
+                    <field name="tot_yield_percent"/>
+                    <field name="tot_tests_backend"/>
+                    <field name="testing_ratio"/>
+                    <field name="cost_encurred_for_testing"/>
+                    <field name="total_investment"/>
+                    <field name="total_grams_yield"/>
+                    <field name="val_per_gram"/>
+                    <field name="run_ids" widget='many2many_tags'/>
+                </tree>
+            </field>
+        </record>
+        
         <record model="ir.ui.view" id="bodhi_dpt_form_view">
             <field name="name">bodhi.dpt.form.view</field>
             <field name="model">bodhi.dpt</field>
             <field name="arch" type="xml">
                 <form string="Digital Product Tracking">
                     <header>
+                        <field name="state" widget="statusbar"/>
+                        <!--<field name="state" widget="statusbar" statusbar_visible="draft,sent,sale,done"/>-->
                     </header>
                     <sheet>
                         <div class="oe_title">
@@ -105,45 +147,7 @@
             </field>
         </record>
         
-        <record model="ir.ui.view" id="bodhi_dpt_tree_view">
-            <field name="name">bodhi.dpt.tree.view</field>
-            <field name="model">bodhi.dpt</field>
-            <field name="arch" type="xml">
-                <tree string="Digital Product Tracking">
-                    <!--<field name="name"/>-->
-                    <field name="client_id"/>
-                    <field name="sale_order_id"/>
-                    <field name="display_name"/>
-                    <field name="exp_delivery_datetime"/>
-                    <field name="prod_request" />
-                    <field name="delivery_date"/>
-                    <field name="total_owed_cc"/>
-                    <field name="total_owed_bv"/>
-                    <field name="qty_in_grams"/>
-                    <field name="tot_transfer_amount"/>
-                    <field name="tot_paid_for_purchase_material"/>
-                    <field name="est_num_runs"/>
-                    <field name="cust_yield"/>
-                    <field name="cons_cannabis_yield"/>
-                    <field name="num_of_tests"/>
-                    <field name="num_of_bh_tests"/>
-                    <field name="xr_yield"/>
-                    <field name="xr_num_of_tests"/>
-                    <field name="bh_material_packaged"/>
-                    <field name="ht_material_packaged"/>
-                    <field name="gl_material_packaged"/>
-                    <field name="dist_run"/>
-                    <field name="tot_yield_percent"/>
-                    <field name="tot_tests_backend"/>
-                    <field name="testing_ratio"/>
-                    <field name="cost_encurred_for_testing"/>
-                    <field name="total_investment"/>
-                    <field name="total_grams_yield"/>
-                    <field name="val_per_gram"/>
-                    <field name="run_ids" widget='many2many_tags'/>
-                </tree>
-            </field>
-        </record>
+        
                 
         <record model="ir.ui.view" id="bodhi_run_form_view">
             <field name="name">bodhi.run.form.view</field>
@@ -151,6 +155,7 @@
             <field name="arch" type="xml">
                 <form string="Bodhi Run">
                     <header>
+                        <field name="state" widget="statusbar"/>
                     </header>
                     <sheet>
                         <div class="oe_title">

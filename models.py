@@ -31,7 +31,13 @@ class bodhi_dpt(models.Model):
             
     display_name = fields.Char(string="DPT", compute='_compute_display_name')
             
-        
+    state = fields.Selection([('pur_man_1', 'Purchase Manager 1'),
+                              ('wh_arrive', 'WH Material Arrive'),
+                              ('lab_1', 'Lab 1'),
+                              ('lab_2', 'Lab 2'),
+                              ('lab_for_xr_backend', 'Lab XR Backend'),
+                              ('pur_man_2', '...TBC...'),
+                              ('pur_man_3', 'Purchase Manager 2')], 'State')
     #purchase manager 
     #4.
     service = fields.Selection([('split', 'Split'), ('purchase', 'Purchase'), ('process', 'Process')], 'Service')
@@ -140,7 +146,13 @@ class bodhi_run(models.Model):
     def _get_display_name(self):
         for inst in self:
             inst.display_name = unicode(inst.run_number)
-            
+    
+    state = fields.Selection([('wh_sec_A', 'WH Sec. A'),
+                              ('extr_1', 'First Extraction Sec. B'),
+                              ('pp_1', 'Post Processing Sec. D'),
+                              ('pp_2', 'Post Processing Sec. E'),
+                              ], 'State')    
+    
     name = fields.Char(string="Name")
     display_name = fields.Char(compute='_get_display_name')
     dpt_id = fields.Many2one(comodel_name="bodhi.dpt", string="DPT order")
