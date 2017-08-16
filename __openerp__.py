@@ -12,7 +12,8 @@
 
     # always loaded
     'data': [
-        #'security/ir.model.access.csv',
+        'security/ir.model.access.csv',
+        'security/groups.xml',
        # 'wizard/wiz_view.xml',
         'view.xml',
         'views/bodhi.xml',

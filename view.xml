@@ -25,12 +25,14 @@
                             </h1>
                         </div>
                         <notebook string="Digital Product Tracking">
-                            <page string="Purchasing Manager">
+                            <page string="Empty">
+                            </page>
+                            <page string="Purchasing Manager" groups="bodhi.pur_man">
                                 <group string="2,3,4">
                                    <group col="4" colspan="2">
                                      <field name="service" help="Split, process or purchase"/>
                                      <field name="exp_delivery_datetime"/>
-                                     <field name="prod_request"/>
+                                     <field name="prod_request" groups="bodhi.pur_man"/>
                                    </group>
                                    <group col="4" string="5">
                                      <field name="if_google_form_fill_sent"/>
@@ -44,7 +46,7 @@
                                     <field name='total_owed_bv'/>
                                 </group>
                             </page>
-                            <page string="WH material arrives">
+                            <page string="WH material arrives" groups="bodhi.wh">
                                 <group string="6,7,8" col="4" colspan="2">
                                     <field name='delivery_date'/>
                                     <field name='qty_in_grams'/>
@@ -57,7 +59,7 @@
                                     <field name='if_signed_all_manif_inv_and_transf_money'/>
                                 </group>
                             </page>
-                            <page string="Lab">
+                            <page string="Lab" groups="bodhi.lab">
                                 <group string="10,11,12,13" col="4" colspan="2">
                                     <field name='cust_yield'/>
                                     <field name='cons_cannabis_yield'/>
@@ -69,7 +71,7 @@
                                     <field name='xr_num_of_tests'/>
                                 </group>
                             </page>
-                            <page string="Lab for XR Backend">
+                            <page string="Lab for XR Backend" groups='bodhi.lab'>
                                 <group string="15,16,17,18,19,19" col="4">
                                     <field name='bh_material_packaged'/>
                                     <field name='ht_material_packaged'/>
@@ -79,7 +81,7 @@
                                     <field name='tot_tests_backend'/>
                                 </group>
                             </page>
-                            <page string="...to be completed...">
+                            <page string="...to be completed..." groups='bodhi.pur_man'>
                                 <group string="20,21,22,23,25" col="4">
                                     <field name='testing_ratio'/>
                                     <field name='cost_encurred_for_testing'/>
@@ -109,9 +111,11 @@
             <field name="arch" type="xml">
                 <tree string="Digital Product Tracking">
                     <!--<field name="name"/>-->
+                    <field name="client_id"/>
+                    <field name="sale_order_id"/>
                     <field name="display_name"/>
                     <field name="exp_delivery_datetime"/>
-                    <field name="prod_request"/>
+                    <field name="prod_request" />
                     <field name="delivery_date"/>
                     <field name="total_owed_cc"/>
                     <field name="total_owed_bv"/>
@@ -122,7 +126,20 @@
                     <field name="cust_yield"/>
                     <field name="cons_cannabis_yield"/>
                     <field name="num_of_tests"/>
-                    <field name="client_id"/>
+                    <field name="num_of_bh_tests"/>
+                    <field name="xr_yield"/>
+                    <field name="xr_num_of_tests"/>
+                    <field name="bh_material_packaged"/>
+                    <field name="ht_material_packaged"/>
+                    <field name="gl_material_packaged"/>
+                    <field name="dist_run"/>
+                    <field name="tot_yield_percent"/>
+                    <field name="tot_tests_backend"/>
+                    <field name="testing_ratio"/>
+                    <field name="cost_encurred_for_testing"/>
+                    <field name="total_investment"/>
+                    <field name="total_grams_yield"/>
+                    <field name="val_per_gram"/>
                     <field name="run_ids" widget='many2many_tags'/>
                 </tree>
             </field>
@@ -220,15 +237,32 @@
                     <!--<field name="name"/>-->
                     <!--<field name="display_name"/>-->
                     <field name="run_number"/>
-                    <field name="original_flower_lot_ids"/>
+                    <field name="run_date"/>
                     <field name="strain"/>
-                    <field name="c_date"/>
-                    <field name="g_per_run"/>
+                    <field name="dpt_id"/>
+                    <!--<field name="client_id"/>-->
                     <field name="runs_together_added" />
                     <field name="runs_together_main" widget="many2many_tags"/>
-                    <field name="machine_num"/>
+                    <field name="c_date"/>
+                    <field name="original_flower_lot_ids"/>
+                    <field name="g_per_run"/>
+                    <field name="machine_num" groups="bodhi.extr"/>
+                    <field name="pre_purge_weight"/>
+                    <field name="runs_put_together"/>
+                    <field name="hydro_carbon_num"/>
+                    <field name="total_weight"/>
+                    <field name="consistancy"/>
+                    <field name="test_date"/>
+                    <field name="customer_weight"/>
+                    <field name="bodhi_weight"/>
+                    <field name="new_bodhi_lot_num"/>
+                    <field name="tot_thc"/>
+                    <field name="tot_cbd"/>
+                    <field name="terpenes"/>
+                    <field name="pass_fail"/>
+                    <field name="grade"/>
+                    <field name="type_of_package"/>
                     <!--<field name="client_id"/>-->
-                    <field name="dpt_id"/>
                 </tree>
             </field>
         </record>
