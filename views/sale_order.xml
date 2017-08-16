@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="bodhi_inh_sale_view_order_form" model="ir.ui.view">
+            <field name="name">bodhi_inh_sale_view_order_form</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <xpath expr="//header" position="inside">
+                    <button name="bodhi_start" type='object' string='Start Bodhi Process'/>
+                </xpath>                
+            </field>            
+        </record>        
+    </data>    
+</openerp>

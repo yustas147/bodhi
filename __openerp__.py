@@ -17,6 +17,8 @@
        # 'wizard/wiz_view.xml',
         'view.xml',
         'views/bodhi.xml',
+        'views/sale_order.xml',
+        'views/purchase_order.xml',
     ],
     'installable': True
 }

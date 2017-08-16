@@ -29,15 +29,27 @@ class bodhi_dpt(models.Model):
             nlist = [inst.service, inst.prod_request, 'BY', inst.client_id.name]
             inst.display_name = " ".join(filter(None, nlist))
             
+    @api.onchange('sale_order_id', 'purchase_order_id')
+    def _set_client_id(self):
+        if self.sale_order_id:
+            self.client_id = self.sale_order_id.partner_id
+        if self.purchase_order_id:
+            self.client_id = self.purchase_order_id.partner_id
+        
+            
     display_name = fields.Char(string="DPT", compute='_compute_display_name')
             
-    state = fields.Selection([('pur_man_1', 'Purchase Manager 1'),
+    state = fields.Selection([
+                              ('draft', 'Draft'),
+                              ('pur_man_1', 'Purchase Manager 1'),
                               ('wh_arrive', 'WH Material Arrive'),
                               ('lab_1', 'Lab 1'),
                               ('lab_2', 'Lab 2'),
                               ('lab_for_xr_backend', 'Lab XR Backend'),
                               ('pur_man_2', '...TBC...'),
-                              ('pur_man_3', 'Purchase Manager 2')], 'State')
+                              ('pur_man_3', 'Purchase Manager 2'),
+                              ('done', 'Done'),
+                              ], string='State', default='draft')
     #purchase manager 
     #4.
     service = fields.Selection([('split', 'Split'), ('purchase', 'Purchase'), ('process', 'Process')], 'Service')
@@ -115,6 +127,7 @@ class bodhi_dpt(models.Model):
     name = fields.Char(string='Name')
     client_id = fields.Many2one('res.partner', 'Client')
     sale_order_id = fields.Many2one('sale.order', 'Initial Sale Order', groups='bodhi.pur_man')
+    purchase_order_id = fields.Many2one('purchase.order', 'Initial Purchase Order', groups='bodhi.pur_man')
     run_ids = fields.One2many(comodel_name='bodhi.run', inverse_name='dpt_id', 
                              string='Bodhi Runs')
     
@@ -147,11 +160,13 @@ class bodhi_run(models.Model):
         for inst in self:
             inst.display_name = unicode(inst.run_number)
     
-    state = fields.Selection([('wh_sec_A', 'WH Sec. A'),
+    state = fields.Selection([('draft', 'Draft'),
+                              ('wh_sec_A', 'WH Sec. A'),
                               ('extr_1', 'First Extraction Sec. B'),
                               ('pp_1', 'Post Processing Sec. D'),
                               ('pp_2', 'Post Processing Sec. E'),
-                              ], 'State')    
+                              ('done', 'Done'),
+                              ], string = 'State', default='draft')    
     
     name = fields.Char(string="Name")
     display_name = fields.Char(compute='_get_display_name')
@@ -197,3 +212,55 @@ class bodhi_run(models.Model):
     type_of_package = fields.Selection(string="Type of Package", selection=[('box','Box'),('pl','Palette')], groups='bodhi.pp')    
 
 
+
+    class SaleOrder(models.Model):
+        _inherit = "sale.order"        
+        
+        @api.multi
+        def bodhi_start(self):
+            self.ensure_one()
+            self.bodhi_dpt_id = self.env['bodhi.dpt'].create({
+                'sale_order_id':self.id,
+                'client_id':self.partner_id.id,
+            })
+            return  {
+                'name':"Created Bodhi Process",
+                'view_mode': 'form',
+                'view_id': False,
+                'view_type': 'form',
+                'res_model': 'bodhi.dpt',
+                'res_id': self.bodhi_dpt_id.id,
+                'type': 'ir.actions.act_window',
+                'nodestroy': True,
+                'target': 'self',
+                'domain': '[]',
+            }            
+                 
+                        
+        bodhi_dpt_id = fields.Many2one(comodel_name="bodhi.dpt", string="Bodhi Process")        
+    
+    class PurchaseOrder(models.Model):
+        _inherit = "purchase.order"        
+
+        @api.multi
+        def bodhi_start(self):
+            self.ensure_one()
+            self.bodhi_dpt_id = self.env['bodhi.dpt'].create({
+                    'purchase_order_id':self.id,
+                    'client_id':self.partner_id.id,
+                })
+            return  {
+                'name':"Created Bodhi Process",
+                'view_mode': 'form',
+                'view_id': False,
+                'view_type': 'form',
+                'res_model': 'bodhi.dpt',
+                'res_id': self.bodhi_dpt_id.id,
+                'type': 'ir.actions.act_window',
+                'nodestroy': True,
+                'target': 'self',
+                'domain': '[]',
+                #'context': context
+            }            
+    
+        bodhi_dpt_id = fields.Many2one(comodel_name="bodhi.dpt", string="Bodhi Process")    

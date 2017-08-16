@@ -4,9 +4,11 @@
         <record model="ir.ui.view" id="bodhi_dpt_tree_view">
             <field name="name">bodhi.dpt.tree.view</field>
             <field name="model">bodhi.dpt</field>
+            <field name="sequence">10</field>
             <field name="arch" type="xml">
                 <tree string="Digital Product Tracking">
                     <!--<field name="name"/>-->
+                    <field name="state"/>
                     <field name="client_id"/>
                     <field name="sale_order_id"/>
                     <field name="display_name"/>
@@ -44,6 +46,7 @@
         <record model="ir.ui.view" id="bodhi_dpt_form_view">
             <field name="name">bodhi.dpt.form.view</field>
             <field name="model">bodhi.dpt</field>
+            <field name="sequence">20</field>
             <field name="arch" type="xml">
                 <form string="Digital Product Tracking">
                     <header>
@@ -59,6 +62,7 @@
                         </div>
                         <group>
                              <field name="sale_order_id"/>
+                             <field name="purchase_order_id"/>
                              <field name="client_id"/>
                         </group>
                         <div class="oe_title">
@@ -242,6 +246,7 @@
                     <!--<field name="name"/>-->
                     <!--<field name="display_name"/>-->
                     <field name="run_number"/>
+                    <field name="state"/>
                     <field name="run_date"/>
                     <field name="strain"/>
                     <field name="dpt_id"/>
