@@ -181,8 +181,8 @@ class bodhi_run(models.Model):
     #service (already)
     strain = fields.Char(string="Strain")    
 
-    original_flower_lot_ids = fields.Many2many(comodel_name='sce.inventory', string="Original Flower Lots", groups='bodhi.wh')
-#    original_flower_lot_id = fields.Many2one(comodel_name='sce.inventory', string="Original Flower Lot")
+    original_flower_lot_ids = fields.Char(string="Original Flower Lots", groups='bodhi.wh')
+#    original_flower_lot_ids = fields.Many2many(comodel_name='sce.inventory', string="Original Flower Lots", groups='bodhi.wh')
     g_per_run = fields.Float(string="#g Per Run", groups='bodhi.wh')
     #TO BE COMPLETED IN EXTRACTION FOR FIRST RUN
         #Section B
