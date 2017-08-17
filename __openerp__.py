@@ -8,7 +8,7 @@
     'version': '1.0.0',
 
     # any module necessary for this one to work correctly
-    'depends': ['sale'],
+    'depends': ['sale', 'purchase', 'mrp'],
 
     # always loaded
     'data': [
@@ -18,7 +18,7 @@
         'view.xml',
         'views/bodhi.xml',
         'views/sale_order.xml',
-       # 'views/purchase_order.xml'
+        'views/purchase_order.xml'
     ],
     'installable': True,
 }

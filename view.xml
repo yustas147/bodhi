@@ -6,11 +6,12 @@
             <field name="model">bodhi.dpt</field>
             <field name="sequence">10</field>
             <field name="arch" type="xml">
-                <tree string="Digital Product Tracking">
+                <tree string="Digital Product Tracking" editable="bottom">
                     <!--<field name="name"/>-->
                     <field name="state"/>
                     <field name="client_id"/>
                     <field name="sale_order_id"/>
+                    <field name="purchase_order_id"/>
                     <field name="display_name"/>
                     <field name="exp_delivery_datetime"/>
                     <field name="prod_request" />
@@ -62,7 +63,7 @@
                         </div>
                         <group>
                              <field name="sale_order_id"/>
-                             <!--<field name="purchase_order_id"/>-->
+                             <field name="purchase_order_id"/>
                              <field name="client_id"/>
                         </group>
                         <div class="oe_title">
@@ -71,7 +72,8 @@
                             </h1>
                         </div>
                         <notebook string="Digital Product Tracking">
-                            <page string="Empty">
+                            <page string="Manufacturing Orders">
+                                <field name='mo_ids'/>
                             </page>
                             <page string="Purchasing Manager" groups="bodhi.pur_man">
                                 <group string="2,3,4">
@@ -242,7 +244,7 @@
             <field name="name">bodhi.run.tree.view</field>
             <field name="model">bodhi.run</field>
             <field name="arch" type="xml">
-                <tree string="Bodhi Run">
+                <tree string="Bodhi Run" editable="top">
                     <!--<field name="name"/>-->
                     <!--<field name="display_name"/>-->
                     <field name="run_number"/>
@@ -251,7 +253,7 @@
                     <field name="strain"/>
                     <field name="dpt_id"/>
                     <!--<field name="client_id"/>-->
-                    <field name="runs_together_added" />
+                    <field name="runs_together_added" widget="many2many_tags"/>
                     <field name="runs_together_main" widget="many2many_tags"/>
                     <field name="c_date"/>
                     <field name="original_flower_lot_ids"/>

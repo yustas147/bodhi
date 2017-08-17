@@ -10,6 +10,13 @@
                 <xpath expr="//header" position="inside">
                     <button name="bodhi_start" type='object' string='Start Bodhi Process'/>
                 </xpath>                
+                <xpath expr="//notebook" position="inside">
+                    <page string="BodhiHigh">
+                        <group sring="BH">
+                            <field name='bodhi_dpt_id'/>
+                        </group>
+                    </page>
+                </xpath>                
             </field>            
         </record>        
     </data>    
