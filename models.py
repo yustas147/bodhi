@@ -215,61 +215,91 @@ class bodhi_run(models.Model):
 
 
 
-    class SaleOrder(models.Model):
-        _inherit = "sale.order"        
-        
-        @api.multi
-        def bodhi_start(self):
-            self.ensure_one()
-            if not self.bodhi_dpt_id:
-                self.bodhi_dpt_id = self.env['bodhi.dpt'].create({
-                    'sale_order_id':self.id,
+class SaleOrder(models.Model):
+    _inherit = "sale.order"        
+    
+    @api.multi
+    def bodhi_start(self):
+        self.ensure_one()
+        if not self.bodhi_dpt_id:
+            self.bodhi_dpt_id = self.env['bodhi.dpt'].create({
+                'sale_order_id':self.id,
+                'client_id':self.partner_id.id,
+            })
+        return  {
+            'name':"Created Bodhi Process",
+            'view_mode': 'form',
+            'view_id': False,
+            'view_type': 'form',
+            'res_model': 'bodhi.dpt',
+            'res_id': self.bodhi_dpt_id.id,
+            'type': 'ir.actions.act_window',
+            'nodestroy': True,
+            'target': 'self',
+            'domain': '[]',
+        }            
+             
+                    
+    bodhi_dpt_id = fields.Many2one(comodel_name="bodhi.dpt", string="Bodhi Process")        
+
+class PurchaseOrder(models.Model):
+    _inherit = "purchase.order"        
+
+    @api.multi
+    def bodhi_start(self):
+        self.ensure_one()
+        if not self.bodhi_dpt_id:
+            self.bodhi_dpt_id = self.env['bodhi.dpt'].create({
+                    'purchase_order_id':self.id,
                     'client_id':self.partner_id.id,
                 })
-            return  {
-                'name':"Created Bodhi Process",
-                'view_mode': 'form',
-                'view_id': False,
-                'view_type': 'form',
-                'res_model': 'bodhi.dpt',
-                'res_id': self.bodhi_dpt_id.id,
-                'type': 'ir.actions.act_window',
-                'nodestroy': True,
-                'target': 'self',
-                'domain': '[]',
-            }            
-                 
-                        
-        bodhi_dpt_id = fields.Many2one(comodel_name="bodhi.dpt", string="Bodhi Process")        
-    
-    class PurchaseOrder(models.Model):
-        _inherit = "purchase.order"        
+        return  {
+            'name':"Created Bodhi Process",
+            'view_mode': 'form',
+            'view_id': False,
+            'view_type': 'form',
+            'res_model': 'bodhi.dpt',
+            'res_id': self.bodhi_dpt_id.id,
+            'type': 'ir.actions.act_window',
+            'nodestroy': True,
+            'target': 'self',
+            'domain': '[]',
+            #'context': context
+        }            
 
-        @api.multi
-        def bodhi_start(self):
-            self.ensure_one()
-            if not self.bodhi_dpt_id:
-                self.bodhi_dpt_id = self.env['bodhi.dpt'].create({
-                        'purchase_order_id':self.id,
-                        'client_id':self.partner_id.id,
-                    })
-            return  {
-                'name':"Created Bodhi Process",
-                'view_mode': 'form',
-                'view_id': False,
-                'view_type': 'form',
-                'res_model': 'bodhi.dpt',
-                'res_id': self.bodhi_dpt_id.id,
-                'type': 'ir.actions.act_window',
-                'nodestroy': True,
-                'target': 'self',
-                'domain': '[]',
-                #'context': context
-            }            
+    bodhi_dpt_id = fields.Many2one(comodel_name="bodhi.dpt", string="Bodhi Process")            
     
-        bodhi_dpt_id = fields.Many2one(comodel_name="bodhi.dpt", string="Bodhi Process")            
-        
-    class mrpProduction(models.Model):
-        _inherit = "mrp.production"        
+class mrpProduction(models.Model):
+    _inherit = "mrp.production"        
+
+    bodhi_dpt_id = fields.Many2one(comodel_name="bodhi.dpt", string="Bodhi Process")          
     
-        bodhi_dpt_id = fields.Many2one(comodel_name="bodhi.dpt", string="Bodhi Process")          
+class Inventory(models.Model):
+    _inherit = "sce.inventory"      
+    
+    slab_label_ids = fields.One2many(comodel_name='bodhi.slab_label', inverse_name='inventory_id', 
+                                    string='Slab Label')
+    grade = fields.Selection(selection=[('bh','BodhiHigh'),('ht','HoneyTree'),('gl','Glob')], string='Grade')
+    stars = fields.Selection(selection=[(1,'1'),(2,'2'),(3,'3'),(4,'4'),(5,'5')], string='Stars')
+
+    
+class SlabLabel(models.Model):
+    _name = 'bodhi.slab_label'
+    
+    inventory_id = fields.Many2one(comodel_name='sce.inventory', string='Sce Inventory')
+    strain = fields.Many2one(comodel_name='sce.strain', related='inventory_id.strain_id', string='Strain')
+    run_id = fields.Many2one(comodel_name='bodhi.run', string='Run')
+    run_number = fields.Char(related='run_id.run_number', string='Run #')
+    prepurge_weight = fields.Float(string='PrePurge Weight')
+    actual_weight = fields.Float(string='PrePurge Weight')
+    grade = fields.Char(string='Grade', related='inventory_id.grade') 
+    client = fields.Many2one(comodel_name='res.partner', related='run_id.client_id')
+    split = fields.Boolean(string='If Split')
+    weight_after_split = fields.Float(string='After Split Weight')
+    number_of_containers = fields.Integer(string='ContNum', help='How many containers included in lot')
+    container_number = fields.Integer(string='Container #')
+    
+    
+    
+    
+    
