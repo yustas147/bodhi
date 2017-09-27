@@ -277,6 +277,7 @@ class mrpProduction(models.Model):
 class Inventory(models.Model):
     _inherit = "sce.inventory"      
     
+    is_sorted = fields.Boolean(string="Is Sorted")
     slab_label_ids = fields.One2many(comodel_name='bodhi.slab_label', inverse_name='inventory_id', 
                                     string='Slab Label')
     grade = fields.Selection(selection=[('bh','BodhiHigh'),('ht','HoneyTree'),('gl','Glob')], string='Grade')
@@ -292,7 +293,7 @@ class SlabLabel(models.Model):
     run_number = fields.Char(related='run_id.run_number', string='Run #')
     prepurge_weight = fields.Float(string='PrePurge Weight')
     actual_weight = fields.Float(string='PrePurge Weight')
-    grade = fields.Char(string='Grade', related='inventory_id.grade') 
+    #grade = fields.Selection(string='Grade', related='inventory_id.grade') 
     client = fields.Many2one(comodel_name='res.partner', related='run_id.client_id')
     split = fields.Boolean(string='If Split')
     weight_after_split = fields.Float(string='After Split Weight')

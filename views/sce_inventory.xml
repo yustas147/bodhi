@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="bodhi_inh_sce_inventory_form" model="ir.ui.view">
+            <field name="name">bodhi.inh.sce.inventory.form</field>
+            <field name="model">sce.inventory</field>
+            <field name="inherit_id" ref="sce.view_sce_inventory_form"/>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <field name='net_package_uom_id' position='after'>
+                    <field name='is_sorted'/>
+                    <field name='grade'/>
+                    <field name='stars'/>
+                    <field name='slab_label_ids'/>
+                </field>
+            </field>            
+        </record>        
+    </data>    
+</openerp>
